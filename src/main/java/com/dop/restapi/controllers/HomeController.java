@@ -22,7 +22,7 @@ public class HomeController {
         Date date = new Date();
         Timestamp time = new Timestamp(date.getTime());
 
-        TemplateModel tm = new TemplateModel();
+        TemplateModel tm = new TemplateModel("JSON-ответ", time.toString());
 
         return ResponseEntity.ok(tm);
 
