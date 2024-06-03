@@ -1,11 +1,9 @@
 package com.dop.restapi.autorization;
-
 import com.dop.restapi.models.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import  org.springframework.security.core.AuthenticationException;
 import  org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +20,6 @@ public class JwtUlit {
         //при создании объекта класса парсер инициируется с секретным ключем
         parser = Jwts.parser().setSigningKey((key));
     }
-
     public String newToken(User user){ //создание токена для пользователя user
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("name", user.getName());
@@ -41,7 +38,6 @@ public class JwtUlit {
     private Claims readJwtClaims(String token){
         return  parser.parseClaimsJwt(token).getBody();
     }
-
     public String acceptToken(HttpServletRequest request){ //извлечение токена из заголовка запроса
         String bearerToken = request.getHeader(TOKEN_HEADER);
         if(bearerToken !=null && bearerToken.startsWith(TOKEN_PREFIX)){
@@ -49,7 +45,6 @@ public class JwtUlit {
         }
         return  null;
     }
-
     public Claims acceptClaims(HttpServletRequest request){ //обработка запроса от клиента
         try{
             String token = acceptToken(request);
@@ -67,7 +62,6 @@ public class JwtUlit {
             throw ex;
         }
     }
-
     public boolean validateClaims(Claims claims) throws  AuthenticationException{ //проверяет действительность утверждений (claims)
         try{
             return  claims.getExpiration().after(new Date());
@@ -76,12 +70,11 @@ public class JwtUlit {
             throw ex;
         }
     }
-
     public String getEmail(Claims claims){
         return claims.getSubject();
     }
-
     private List<String> getRoles(Claims claims){
         return (List<String>)  claims.get("roles");
     }
 }
+
